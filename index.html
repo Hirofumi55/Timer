@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Timer</title>
+</head>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<body>
+    <div class="jumbotron">
+        <div>
+            <h1 align="center" id="timer"></h1>
+        </div>
+
+    </div>
+
+    <div align="center">
+        <button id="start" class="btn btn-success btn-lg">start</button>
+        <button id="stop" class="btn btn-danger btn-lg">stop</button>
+        <button id="reset" class="btn btn-info btn-lg">reset</button>
+    </div>
+
+</body>
+
+
+<script>
+    (function() {
+        //通常エラーにならないものがなるようになる(おまじない) 
+        'use strict';
+
+        //ここで変数を定義することでスコープを拡張
+        var passedTime = 0
+        var intervalId = null
+        var timer = document.getElementById('timer')
+
+
+        //スタートボタン押下で動作するメソッド
+        function start() {
+
+            //intervalIdがnullならばリターン
+            if (intervalId != null) {
+                return
+            }
+
+            intervalId = setInterval(function() {
+                //passedTimeをインクリメント
+                passedTime++
+                render()
+            }, 1000)
+        }
+
+        //ストップボタン押下で動作するメソッド
+        function stop() {
+
+            if (intervalId != null) {
+                clearInterval(intervalId)
+                intervalId = null
+            }
+
+        }
+
+        //リセットボタン押下で動作するメソッド
+        function reset() {
+            stop()
+            passedTime = 0
+            render()
+        }
+
+        //更新動作をするメソッド
+        function render() {
+            var minutes = Math.floor(passedTime / 60)
+            var seconds = passedTime % 60
+
+            timer.textContent = zeroFill(minutes) + ":" + zeroFill(seconds)
+        }
+
+
+        //htmlのid=timerを取得している
+        //        var timer = document.getElementById('timer')
+
+        //1000msごとに処理を実施する
+        //        setInterval(function() {
+
+        //現在時刻を取得
+        //            var date = new Date()
+        //            var hours = date.getHours()
+        //            var minutes = date.getMinutes()
+        //            var seconds = date.getSeconds()
+        //
+        //            //ゼロ埋めしてタイマーに値を入れている
+        //            timer.textContent = zeroFill(hours) + ':' + zeroFill(minutes) + ':' + zeroFill(seconds)
+        //        }, 1000);
+        //
+
+
+        //ゼロ埋めするメソッド
+        function zeroFill(num) {
+            return ('0' + num).slice(-2)
+        }
+
+        //イベントとメソッドを紐づけている
+        document.getElementById('start').addEventListener('click', start)
+        document.getElementById('stop').addEventListener('click', stop)
+        document.getElementById('reset').addEventListener('click', reset)
+        render()
+
+
+    }());
+
+</script>
+
+
+</html>
